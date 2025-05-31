@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
 import java.util.Optional;
 
 @Service
@@ -23,6 +22,7 @@ public class MaidServiceImpl implements MaidService {
 
     @Override
     public Maid getMaidId(Long maidid) {
+
         return maidRepo.findById(maidid).orElse(null);
     }
 
@@ -43,7 +43,7 @@ public class MaidServiceImpl implements MaidService {
     }
 
     @Override
-    public String deleteMaidById(Long maidid) {
+    public MaidDTO deleteMaidById(Long maidid) {
         if(maidRepo.existsById(maidid)){
             maidRepo.deleteById(maidid);
             return "Maid deleted by Id: " + maidid;
