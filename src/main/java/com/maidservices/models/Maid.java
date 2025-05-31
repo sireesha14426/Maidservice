@@ -13,8 +13,8 @@ import java.time.LocalTime;
 public class Maid {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long maidid;
-    private String maidname;
+    private long id;
+    private String name;
     private String field;
     private int rating;
     private String startTime;

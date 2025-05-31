@@ -10,8 +10,8 @@ import java.util.Optional;
 public interface MaidRepo extends JpaRepository<Maid, Long> {
 
     Maid save(Maid maid);
-    Optional<Maid> findById(Long maidid);
-    void deleteById(Long maidid);
+    Optional<Maid> findById(Long id);
+    void deleteById(Long id);
 
     ResponseEntity<MaidDTO> save(MaidDTO maidDTO);
 }
