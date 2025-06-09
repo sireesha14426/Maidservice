@@ -15,4 +15,5 @@ public class MaidDTO {
     private int rating;
     private String startTime;
     private String endTime;
+    private String description;
 }

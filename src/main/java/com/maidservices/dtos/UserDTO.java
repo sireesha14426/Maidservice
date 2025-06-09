@@ -7,8 +7,8 @@ import lombok.Data;
 
 @Data
 public class UserDTO {
-    private long userid;
-    private String username;
+    private long id;
+    private String name;
     private String email;
     private String phoneno;
     private String address;

@@ -12,6 +12,5 @@ public interface MaidRepo extends JpaRepository<Maid, Long> {
     Maid save(Maid maid);
     Optional<Maid> findById(Long id);
     void deleteById(Long id);
-
     ResponseEntity<MaidDTO> save(MaidDTO maidDTO);
 }

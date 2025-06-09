@@ -1,6 +1,9 @@
 package com.maidservices.service;
 
-import com.maidservices.models.Owner;
+import com.maidservices.dtos.MaidDTO;
+import com.maidservices.dtos.OwnerDTO;
+
+import java.util.Map;
 
 public interface OwnerService {
 
@@ -9,8 +12,9 @@ public interface OwnerService {
     private String flatname;
     private long houseno;*/
 
-    public Owner createOwner(Owner owner);
-    public Owner getOwnerId(Long ownerid);
-    public String deleteByOwnerId(Long ownerid);
-    public Owner updateOwner(Long ownerid, String ownername, Long houseno, String flatname);
+    OwnerDTO createOwner(OwnerDTO ownerDTO);
+    OwnerDTO getOwnerId(Long id);
+    OwnerDTO updateOwnerById(Long id, OwnerDTO ownerDTO);
+    public Map<String,Object> deleteOwnerById(Long id);
+
 }

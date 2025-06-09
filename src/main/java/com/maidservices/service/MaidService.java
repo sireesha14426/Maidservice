@@ -1,17 +1,18 @@
 package com.maidservices.service;
 
 import com.maidservices.dtos.MaidDTO;
-import com.maidservices.models.Maid;
-import org.springframework.http.ResponseEntity;
+
+import java.awt.image.VolatileImage;
+import java.util.Map;
 
 public interface MaidService {
 
     MaidDTO createMaid(MaidDTO maidDTO);
 
-    public Maid getMaidId(Long id);
+    MaidDTO getMaidId(Long id);
 
     MaidDTO updateMaidById(Long id, MaidDTO maidDTO);
 
-    public String deleteMaidById(Long id);
+    public Map<String,Object> deleteMaidById(Long id);
 
 }

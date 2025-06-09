@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class OwnerDTO {
-    private long ownerid;
-    private String ownername;
+    private long id;
+    private String name;
     private String flatname;
     private long houseno;
 }
