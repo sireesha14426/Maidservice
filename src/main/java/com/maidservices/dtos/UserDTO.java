@@ -1,6 +1,6 @@
 package com.maidservices.dtos;
 
-import com.maidservices.models.Usertype;
+import com.maidservices.constants.Usertype;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;

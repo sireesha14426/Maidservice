@@ -8,8 +8,9 @@ import lombok.Data;
 public class Owner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     private String name;
-    private String flatname;
-    private Long houseno;
+    private String flatName;
+    private String houseNo;
+    private String description;
 }

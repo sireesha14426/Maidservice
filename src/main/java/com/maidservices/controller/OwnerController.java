@@ -18,7 +18,7 @@ public class OwnerController {
     @PostMapping("/Owner")
     public ResponseEntity<OwnerDTO> createOwner(@RequestBody OwnerDTO ownerDTO){
         OwnerDTO createOwner = ownerService.createOwner(ownerDTO);
-        return new ResponseEntity<>(createOwner, HttpStatus.CREATED);
+        return new ResponseEntity<>(createOwner, HttpStatus.OK);
     }
 
     @GetMapping("/Owner/{id}")
@@ -33,7 +33,7 @@ public class OwnerController {
         return ResponseEntity.ok(updatedOwner);
     }
     @DeleteMapping("/Owner/{id}")
-    public ResponseEntity<Map<String,Object>> deleteOwnerById(Long id){
+    public ResponseEntity<Map<String,Object>> deleteOwnerById(@PathVariable("id") Long id){
         Map<String, Object> response = ownerService.deleteOwnerById(id);
         return ResponseEntity.ok(response);
     }

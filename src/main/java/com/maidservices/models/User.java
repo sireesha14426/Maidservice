@@ -1,9 +1,9 @@
 package com.maidservices.models;
 
+import com.maidservices.constants.Usertype;
 import jakarta.persistence.*;
-import jdk.jfr.DataAmount;
 import lombok.Data;
-import org.hibernate.usertype.UserType;
+
 @Data
 @Entity
 public class User {

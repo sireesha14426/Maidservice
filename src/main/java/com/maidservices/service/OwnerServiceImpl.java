@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-
 public class OwnerServiceImpl implements OwnerService {
 
     @Autowired
@@ -29,6 +28,9 @@ public class OwnerServiceImpl implements OwnerService {
     @Override
     public OwnerDTO createOwner(OwnerDTO ownerDTO) {
         Owner owner = objectMapper.convertValue(ownerDTO, Owner.class);
+        String currentTime = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("MMMM dd, yyyy hh:mm:ss a"));
+        owner.setDescription("Owner created at " + currentTime);
         Owner savedOwner = ownerRepo.save(owner);
         return objectMapper.convertValue(savedOwner, OwnerDTO.class);
     }
@@ -45,8 +47,11 @@ public class OwnerServiceImpl implements OwnerService {
         Owner existingOwner = ownerRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Owner not found with ID: " + id));
         existingOwner.setName(ownerDTO.getName());
-        existingOwner.setFlatname(ownerDTO.getFlatname());
-        existingOwner.setHouseno(ownerDTO.getHouseno());
+        existingOwner.setFlatName(ownerDTO.getFlatName());
+        existingOwner.setHouseNo(ownerDTO.getHouseNo());
+        String currentTime = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("MMMM dd, yyyy hh:mm:ss a"));
+        existingOwner.setDescription("Owner updated at " + currentTime);
         Owner updatedOwner = ownerRepo.save(existingOwner);
         return objectMapper.convertValue(updatedOwner, OwnerDTO.class);
     }

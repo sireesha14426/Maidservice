@@ -6,6 +6,7 @@ import lombok.Data;
 public class OwnerDTO {
     private long id;
     private String name;
-    private String flatname;
-    private long houseno;
+    private String flatName;
+    private String houseNo;
+    private String description;
 }
