@@ -1,10 +1,11 @@
 package com.maidservices.service;
 
+import com.maidservices.constants.BookingStatus;
 import com.maidservices.dtos.BookingDTO;
 import com.maidservices.models.Booking;
 
 public interface BookingService {
     public BookingDTO BookMaidById(BookingDTO bookingDTO);
-    public BookingDTO cancelBooking(Long id);
+    public BookingDTO cancelBooking(Long id, BookingStatus bookingStatus);
     public BookingDTO updateBooking(Long id);
 }

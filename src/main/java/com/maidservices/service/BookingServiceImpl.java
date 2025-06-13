@@ -1,6 +1,7 @@
 package com.maidservices.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.maidservices.constants.BookingStatus;
 import com.maidservices.dtos.BookingDTO;
 import com.maidservices.exceptions.ResourceNotFoundException;
 import com.maidservices.models.Booking;
@@ -36,12 +37,21 @@ public class BookingServiceImpl implements BookingService{
 
         Maid maid = maidRepo.findById(bookingDTO.getMaid().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Maid not found"));
+        boolean maidAlreadyBooked = bookingRepo.existsByMaidAndBookingDateAndBookingTime(
+                maid,
+                bookingDTO.getBookingDate(),
+                bookingDTO.getBookingTime()
+        );
+
+        if (maidAlreadyBooked) {
+            throw new IllegalStateException("Maid is not available at the selected date and time.");
+        }
         booking.setOwner(owner);
         booking.setMaid(maid);
         booking.setBookingDate(bookingDTO.getBookingDate());
         booking.setBookingTime(bookingDTO.getBookingTime());
         booking.setBookingLocation(bookingDTO.getBookingLocation());
-        booking.setBookingStatus(bookingDTO.getBookingStatus());
+        booking.setBookingStatus(BookingStatus.PENDING);
 
         // Save booking
         Booking saved = bookingRepo.save(booking);
@@ -51,8 +61,17 @@ public class BookingServiceImpl implements BookingService{
     }
 
         @Override
-    public BookingDTO cancelBooking(Long id) {
-        return null;
+    public BookingDTO cancelBooking(Long id, BookingStatus bookingStatus) {
+        Booking booking=bookingRepo.findById(id)
+                .orElseThrow(()->new ResourceNotFoundException("Booking id was not found with id "+ id));
+
+
+        if(booking.getBookingStatus() == BookingStatus.CANCELLED){
+            throw new IllegalStateException("Booking is already cancelled.");
+        }
+            booking.setBookingStatus(BookingStatus.CANCELLED);
+        Booking updateBooking=bookingRepo.save(booking);
+        return  objectMapper.convertValue(updateBooking,BookingDTO.class);
     }
 
     @Override
