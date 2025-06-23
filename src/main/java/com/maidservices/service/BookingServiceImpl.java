@@ -61,18 +61,28 @@ public class BookingServiceImpl implements BookingService{
     }
 
         @Override
-    public BookingDTO cancelBooking(Long id, BookingStatus bookingStatus) {
-        Booking booking=bookingRepo.findById(id)
-                .orElseThrow(()->new ResourceNotFoundException("Booking id was not found with id "+ id));
+        public BookingDTO cancelBooking(Long id) {
+            Booking booking = bookingRepo.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id: " + id));
 
+            // Get the current status for messaging
+            BookingStatus currentStatus = booking.getBookingStatus();
 
-        if(booking.getBookingStatus() == BookingStatus.CANCELLED){
-            throw new IllegalStateException("Booking is already cancelled.");
+            if (currentStatus == BookingStatus.COMPLETED) {
+                throw new IllegalStateException("Booking with id " + id + " cannot be cancelled as it is already COMPLETED. Current status: " + currentStatus);
+            } else if (currentStatus == BookingStatus.CANCELLED) {
+                throw new IllegalStateException("Booking with id " + id + " is already CANCELLED. Current status: " + currentStatus);
+            }
+
+            // Only allow cancellation if status is PENDING or CONFIRMED
+            if (currentStatus == BookingStatus.PENDING || currentStatus == BookingStatus.CONFIRMED) {
+                booking.setBookingStatus(BookingStatus.CANCELLED); // Set to cancelled
+                Booking updatedBooking = bookingRepo.save(booking);
+                return objectMapper.convertValue(updatedBooking, BookingDTO.class);
+            } else {
+                throw new IllegalStateException("Booking with id " + id + " was cancel successfully" + currentStatus);
+            }
         }
-            booking.setBookingStatus(BookingStatus.CANCELLED);
-        Booking updateBooking=bookingRepo.save(booking);
-        return  objectMapper.convertValue(updateBooking,BookingDTO.class);
-    }
 
     @Override
     public BookingDTO updateBooking(Long id) {

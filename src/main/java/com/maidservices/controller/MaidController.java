@@ -50,4 +50,10 @@ public class MaidController {
         MaidDTO updatedMaid = maidService.updateMaidById(id, maidDTO);
         return ResponseEntity.ok(updatedMaid);
     }
+
+    @PostMapping("/login/username")
+    public ResponseEntity<Boolean> loginByUserName(@RequestParam String userName , @RequestParam String password) {
+        boolean result = maidService.loginByUserName(userName, password);
+        return ResponseEntity.ok(result);
+    }
 }

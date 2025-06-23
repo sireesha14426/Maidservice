@@ -6,15 +6,14 @@ import com.maidservices.exceptions.ResourceNotFoundException;
 import com.maidservices.models.Maid;
 import com.maidservices.repo.MaidRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class MaidServiceImpl implements MaidService {
@@ -25,12 +24,19 @@ public class MaidServiceImpl implements MaidService {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public MaidDTO createMaid(MaidDTO maidDTO) {
             Maid maid = objectMapper.convertValue(maidDTO, Maid.class);
         String currentTime = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("MMMM dd, yyyy hh:mm:ss a"));
         maid.setDescription("Maid created at " + currentTime);
+
+        String encodedPassword = passwordEncoder.encode(maidDTO.getPassword());
+        maid.setPassword(encodedPassword);
+
             Maid savedMaid = maidRepo.save(maid);
             return objectMapper.convertValue(savedMaid, MaidDTO.class);
         }
@@ -75,4 +81,32 @@ public class MaidServiceImpl implements MaidService {
             Maid updated = maidRepo.save(existingMaid);
             return objectMapper.convertValue(updated, MaidDTO.class);
     }
+
+    public boolean loginByUserName(String userName, String password){
+            Optional<Maid> maidOptional = maidRepo.findByUserName(userName);
+
+            if (maidOptional.isPresent()) {
+                Maid maid = maidOptional.get();
+
+                // ✅ Match raw password with encoded password
+                return passwordEncoder.matches(password, maid.getPassword());
+            } else {
+                return false; // Username not found
+            }
+        }
+
+       /* System.out.println("Received login request for username: " + userName);
+
+        Optional<Maid> maid = Optional.ofNullable(maidRepo.findByUserName(userName)
+                .orElseThrow(() -> new ResourceNotFoundException("username was not found")));
+
+        if (maid.isPresent()) {
+            Maid maid1 = maid.get();
+            boolean result = passwordEncoder.matches(password, maid1.getPassword());
+            System.out.println("Password match result: " + result);
+            return result;
+        } else {
+            return false;
+        }
+    }*/
 }

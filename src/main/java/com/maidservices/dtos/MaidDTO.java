@@ -16,4 +16,6 @@ public class MaidDTO {
     private String startTime;
     private String endTime;
     private String description;
+    private String userName;
+    private String password;
 }
